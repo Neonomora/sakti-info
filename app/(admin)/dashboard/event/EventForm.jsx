@@ -1,0 +1,274 @@
+"use client";
+
+import { useState, useTransition } from "react";
+import {
+  createAction,
+  createSubEventAction,
+  deleteAction,
+  updateAction,
+} from "./actions";
+import { setHours, setMinutes, formatISO } from "date-fns";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+
+function convertTimeToISO(timeString) {
+  if (!timeString.includes(":")) return "";
+  const [hours, minutes] = timeString.split(":").map(Number);
+
+  // Mulai dari tanggal hari ini
+  const now = new Date();
+  const withHours = setHours(now, hours);
+  const withMinutes = setMinutes(withHours, minutes);
+
+  return formatISO(withMinutes); // ISO format
+}
+
+// Create Main Event
+export function CreateMainEvent() {
+  const router = useRouter();
+  const [title, setTitle] = useState("");
+  const [subEvents, setSubEvents] = useState([]);
+  const [isPending, startTransition] = useTransition();
+
+  const handleSubChange = (index, field, value) => {
+    const newSubs = [...subEvents];
+    newSubs[index][field] = value;
+    setSubEvents(newSubs);
+  };
+
+  const addSubEvent = () => {
+    setSubEvents([...subEvents, { title: "", time: "" }]);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!title) {
+      toast.error("Judul tidak boleh kosong");
+      return;
+    }
+
+    // Konversi setiap subEvent.time ke ISO
+    const formattedTime = subEvents.map((sub) => ({
+      ...sub,
+      time: sub.time ? convertTimeToISO(sub.time) : "", // hanya konversi jika ada waktunya
+    }));
+
+    startTransition(async () => {
+      const result = await createAction({
+        title,
+        subEvents: formattedTime,
+      });
+      if (result.success) {
+        router.refresh(); // Refresh halaman setelah submit
+        setTitle("");
+        setSubEvents([{ title: "", time: "" }]);
+      } else {
+        alert("Gagal membuat event: " + result.message);
+      }
+    });
+  };
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <input
+        type="text"
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+        placeholder="Judul Event Utama"
+        className="border p-2 w-full"
+      />
+      {subEvents.map((sub, idx) => (
+        <div key={idx} className="space-y-2 border p-2">
+          <input
+            type="text"
+            value={sub.title}
+            onChange={(e) => handleSubChange(idx, "title", e.target.value)}
+            placeholder="Judul Sub Event"
+            className="border p-2 w-full"
+          />
+          <input
+            type="time"
+            value={sub.time}
+            onChange={(e) => handleSubChange(idx, "time", e.target.value)}
+            className="border p-2 w-full"
+          />
+        </div>
+      ))}
+      <div className="flex space-x-2">
+        <button
+          type="button"
+          onClick={addSubEvent}
+          className="bg-gray-300 px-3 rounded"
+        >
+          + Tambah Sub Event
+        </button>
+        <button
+          type="submit"
+          disabled={isPending}
+          className="bg-blue-500 text-white px-4 py-2 rounded"
+        >
+          {isPending ? "Loading..." : "Simpan Event"}
+        </button>
+      </div>
+    </form>
+  );
+}
+
+// Create Sub Event
+export function CreateSubEvent({ eventId }) {
+  const router = useRouter();
+  const [title, setTitle] = useState("");
+  const [time, setTime] = useState("");
+  const [showForm, setShowForm] = useState(false);
+  const [isPending, startTransition] = useTransition();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (!title && !time) return toast.error("Judul dan Waktu harus di isi");
+
+    const formattedTime = convertTimeToISO(time);
+
+    startTransition(async () => {
+      const result = await createSubEventAction(eventId, {
+        title,
+        time: formattedTime,
+      });
+      if (result.success) {
+        router.refresh();
+        setTime("");
+        setTitle("");
+      } else {
+        alert("Gagal Buat Sub Event:" + result.message);
+      }
+    });
+  };
+
+  return (
+    <div className="flex flex-col space-y-2">
+      <button
+        className="bg-green-500 text-white px-3 py-1 rounded h-8"
+        onClick={() => setShowForm(!showForm)}
+      >
+        {showForm ? "Tutup" : "Add"}
+      </button>
+      {showForm && (
+        <form onSubmit={handleSubmit} className="space-x-2">
+          <input
+            type="text"
+            value={title}
+            placeholder="Title"
+            className="border-2"
+            onChange={(e) => setTitle(e.target.value)}
+          />
+          <input
+            type="time"
+            value={time}
+            placeholder="Time"
+            className="border-2"
+            onChange={(e) => setTime(e.target.value)}
+          />
+          <button
+            className="bg-gray-300 rounded px-4"
+            type="submit"
+            disabled={isPending}
+          >
+            {isPending ? "Loading..." : "Add Sub Event"}
+          </button>
+        </form>
+      )}
+    </div>
+  );
+}
+
+// Update Event & Sub Event
+export function UpdateEvent({ id, subId, currentTitle, currentTime }) {
+  const router = useRouter();
+  const [title, setTitle] = useState(currentTitle);
+  const [time, setTime] = useState(
+    currentTime ? currentTime.substring(11, 16) : ""
+  ); // Extract HH:MM
+  const [isPending, startTransition] = useTransition();
+  const [showForm, setShowForm] = useState(false);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (!title && !time)
+      return toast.error("Form Tidak Boleh Kosong");
+
+    // Konversi time ke ISO
+    const formattedTime = convertTimeToISO(time);
+
+    startTransition(async () => {
+      const result = await updateAction(id, subId, title, formattedTime);
+      if (result.success) {
+        router.refresh();
+      } else {
+        alert("Gagal mengupdate event: " + result.message);
+      }
+    });
+  };
+  return (
+    <>
+      <div>
+        <button
+          onClick={() => setShowForm(!showForm)}
+          className="bg-blue-500 text-white px-3 py-1 rounded"
+        >
+          {showForm ? "Tutup" : "Edit"}
+        </button>
+      </div>
+      {showForm && (
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <input
+            type="text"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            className="border p-2 w-full"
+          />
+          {subId && (
+            <input
+              type="time"
+              value={time}
+              onChange={(e) => setTime(e.target.value)}
+              className="border p-2 w-full"
+            />
+          )}
+          <button
+            type="submit"
+            disabled={isPending}
+            className="bg-green-500 text-white px-4 py-2 rounded"
+          >
+            {isPending ? "Loading..." : "Simpan Perubahan"}
+          </button>
+        </form>
+      )}
+    </>
+  );
+}
+
+// Delete Event
+export function DeleteEvent({ id, subId }) {
+  const router = useRouter();
+  const [isPending, startTransition] = useTransition();
+
+  const handleDelete = () => {
+    startTransition(async () => {
+      const result = await deleteAction(id, subId);
+      if (result.success) {
+        router.refresh();
+      } else {
+        alert("Gagal menghapus event: " + result.message);
+      }
+    });
+  };
+  return (
+    <button
+      onClick={handleDelete}
+      disabled={isPending}
+      className="bg-red-500 text-white px-3 py-1 rounded h-8"
+    >
+      {isPending ? "Loading..." : "Hapus"}
+    </button>
+  );
+}
