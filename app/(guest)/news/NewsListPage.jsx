@@ -25,7 +25,7 @@ export default function NewsListPage({ newsList }) {
           return (
             <li
               key={item._id}
-              className="w-64 h-40 p-4 border rounded-md hover:bg-gray-100 cursor-pointer flex-shrink-0 shadow border-gray-300"
+              className="w-64 h-40 p-4 border rounded-md hover:bg-gray-100 cursor-pointer flex-shrink-0 shadow border-gray-300 bg-white"
             >
               <button
                 onClick={() => handleOpen(item._id)}
