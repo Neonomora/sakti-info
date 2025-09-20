@@ -1,25 +1,32 @@
-import UkmEvent from "@/models/ukm/UkmEvent";
-import { connectDB } from "@/lib/mongoose";
+"use client";
 
-export default async function EventsPage() {
-  await connectDB();
-  const eventsDb = await UkmEvent.find().lean();
+import useSWR from "swr";
 
-  const events = eventsDb.map((event) => ({
-    ...event,
-    _id: event._id.toString(),
-    subEvents:
-      event.subEvents?.map((sub) => ({
-        ...sub,
-        _id: sub._id.toString(),
-        time: sub.time instanceof Date ? sub.time.toISOString() : sub.time,
-      })) ?? [],
-  }));
+const fetcher = (url) => fetch(url).then((res) => res.json());
+
+export default function TaskPage() {
+  const { data, error, isLoading } = useSWR("/api/admin/ukm/events", fetcher);
+
+  if (isLoading) return <p>Loading...</p>;
+  if (error) return <p>Something went wrong</p>;
+
   return (
     <>
+      <h1 className="text-red-300 text-4xl font-bold">Events</h1>
       <ul>
-        {events.map((event) => (
-          <li key={event._id}>{event.title}</li>
+        {data?.map((item) => (
+          <li key={item._id}>
+            <p className="text-xl font-semibold">{item.title}</p>
+            {item.subEvents?.length > 0 ? (
+              <ul>
+                {item.subEvents.map((sub) => (
+                  <li key={sub._id} className="list-decimal list-inside">{sub.title}</li>
+                ))}
+              </ul>
+            ) : (
+              <p>No Sub Event</p>
+            )}
+          </li>
         ))}
       </ul>
     </>

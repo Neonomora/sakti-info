@@ -1,9 +1,8 @@
 import { connectDB } from "@/lib/mongoose";
 import UKMEvent from "@/models/ukm/UkmEvent";
 import AnnouncementUKM from "@/models/ukm/AnnouncementUKM";
-import EventAccordion from "./EventAccordion";
-import { format } from "date-fns";
-import { id } from "date-fns/locale";
+import Event from "./Event";
+import Announcement from "./Announcement";
 
 export const revalidate = 60;
 
@@ -25,35 +24,30 @@ export default async function EventPage() {
       })) ?? [],
   }));
 
+  const plainAnnouncement = announcements.map((ann) => ({
+    ...ann,
+    _id: ann._id.toString(),
+  }));
+
   return (
     <div className="max-w-6xl mx-auto">
       <div className="flex flex-row">
         <section className="basis-1/3 pr-4">
-          <h3 className="text-2xl font-semibold mb-4 pl-4">Seputar UKM</h3>
-          <ul className="space-y-4">
-            {announcements.map((announcement) => (
-              <li
-                key={announcement._id}
-                className="bg-white p-4 rounded-lg shadow"
-              >
-                <h4 className="text-xl font-bold">{announcement.title}</h4>
-                <p>{announcement.description}</p>
-                <p className="text-sm text-gray-500 mt-2">
-                  <strong>Dibuat Pada:</strong>{" "}
-                  {format(new Date(announcement.createdAt), "dd MMMM yyyy", {
-                    locale: id,
-                  })}
-                </p>
-              </li>
+          <h3 className="text-xl md:text-3xl text-center font-bold text-center mb-6 pl-4">
+            Seputar UKM
+          </h3>
+          <div className="space-y-4">
+            {plainAnnouncement.map((item) => (
+              <Announcement key={item._id} announcement={item} />
             ))}
-          </ul>
+          </div>
         </section>
         <section className="basis-2/3 pl-4">
-          <h2 className="text-3xl font-bold text-center mb-6">
+          <h2 className="text-xl md:text-3xl text-center font-bold text-center mb-6">
             Daftar Acara UKM
           </h2>
           {plainEvents.map((event) => (
-            <EventAccordion key={event._id} event={event} />
+            <Event key={event._id} event={event} />
           ))}
         </section>
       </div>

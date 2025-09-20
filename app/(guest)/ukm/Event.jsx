@@ -1,5 +1,3 @@
-"use client";
-
 import {
   Accordion,
   AccordionItem,
@@ -16,7 +14,7 @@ export default function EventAccordion({ event }) {
       className="w-full max-w-2xl bg-white rounded-xl shadow-md mx-auto my-4"
     >
       <AccordionItem value="event-detail">
-        <AccordionTrigger className="text-left px-4 py-3 text-lg font-medium border-b">
+        <AccordionTrigger className="text-left px-4 py-3 text-md md:text-lg font-medium border-b">
           {event.title}
         </AccordionTrigger>
 

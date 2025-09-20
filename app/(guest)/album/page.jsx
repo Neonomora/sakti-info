@@ -22,14 +22,14 @@ export default async function AlbumsPage({ searchParams }) {
 
   return (
     <main className="max-w-6xl mx-auto">
-      <h1 className="text-3xl font-bold mb-6">Daftar Album</h1>
+      <h1 className="text-3xl font-bold mb-6 text-center">Daftar Album</h1>
 
       <div className="mb-6 space-x-4">
         {categories.map((cat) => (
           <Link
             key={cat}
             href={`/album?category=${encodeURIComponent(cat)}`}
-            className={`inline-block px-4 py-2 rounded ${
+            className={`inline-block px-4 py-2 rounded m-4 w-40 text-center ${
               category === cat
                 ? "bg-black text-white"
                 : "bg-gray-200 text-gray-700 hover:bg-gray-300"

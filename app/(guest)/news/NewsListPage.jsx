@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import Modal from "@/components/ui/Modal" // Pastikan path sesuai
+import Modal from "@/components/ui/Modal"
 
 export default function NewsListPage({ newsList }) {
   const [openModalId, setOpenModalId] = useState(null)
@@ -16,9 +16,9 @@ export default function NewsListPage({ newsList }) {
 
   return (
     <div className="max-w-6xl mx-auto py-10">
-      <h1 className="text-2xl font-bold mb-6">Seputar Kampus</h1>
+      <h1 className="text-2xl font-bold mb-6 text-center">Seputar Kampus</h1>
 
-      <ul className="flex flex-row gap-4 flex-wrap">
+      <ul className="flex flex-row gap-4 flex-wrap justify-center xl:justify-start">
         {newsList.map((item) => {
           const isOpen = openModalId === item._id
 

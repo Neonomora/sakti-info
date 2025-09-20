@@ -2,6 +2,8 @@ import { connectDB } from "@/lib/mongoose";
 import CampusEvent from "@/models/event/CampusEvent";
 import { CreateMainEvent, UpdateEvent, DeleteEvent, CreateSubEvent } from "./EventForm";
 
+export const revalidate = 5;
+
 export default async function AdminEventsPage() {
   await connectDB();
   const eventsDb = await CampusEvent.find().lean();

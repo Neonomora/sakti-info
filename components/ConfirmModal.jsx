@@ -1,4 +1,5 @@
-import Modal from "./components/ui/modal"
+import Modal from "./ui/Modal"
+import { Button } from "./ui/button";
 
 export default function ConfirmModal({ isOpen, onClose, onConfirm, message }) {
   return (
