@@ -1,6 +1,7 @@
 import { connectDB } from "@/lib/mongoose";
-import UKMEvent from "@/models/ukm/UkmEvent";
+import UkmEvent from "@/models/ukm/UkmEvent";
 import AnnouncementUKM from "@/models/ukm/AnnouncementUKM";
+
 import Event from "./Event";
 import Announcement from "./Announcement";
 
@@ -10,7 +11,7 @@ export default async function EventPage() {
   await connectDB();
 
   const [eventList, announcements] = await Promise.all([
-    UKMEvent.find().lean().sort({ createdAt: -1 }),
+    UkmEvent.find().lean().sort({ createdAt: -1 }),
     AnnouncementUKM.find().lean().sort({ createdAt: -1 }),
   ]);
 
@@ -24,7 +25,7 @@ export default async function EventPage() {
       })) ?? [],
   }));
 
-  const plainAnnouncement = announcements.map((ann) => ({
+  const newsList = announcements.map((ann) => ({
     ...ann,
     _id: ann._id.toString(),
   }));
@@ -37,9 +38,7 @@ export default async function EventPage() {
             Seputar UKM
           </h3>
           <div className="space-y-4">
-            {plainAnnouncement.map((item) => (
-              <Announcement key={item._id} announcement={item} />
-            ))}
+            <Announcement newsList={newsList} />
           </div>
         </section>
         <section className="basis-2/3 pl-4">

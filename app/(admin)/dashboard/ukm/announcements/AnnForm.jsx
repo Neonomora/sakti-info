@@ -1,20 +1,19 @@
 "use client";
 
+import { createNews, updateNews, deleteNews } from "./actions";
 import { useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
 import Modal from "@/components/ui/Modal";
 import { Button } from "@/components/ui/button";
 import { TrashIcon, PencilSquareIcon } from "@heroicons/react/24/outline";
 
-export default function NewsPage({
-  newsList,
-  createNews,
-  updateNews,
-  deleteNews,
-}) {
+export default function AnnForm({ newsList }) {
   const [form, setForm] = useState({ title: "", content: "" });
   const [editId, setEditId] = useState(null);
   const [openModalId, setOpenModalId] = useState(null);
   const [isPending, startTransition] = useTransition();
+
+  const router = useRouter();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -24,9 +23,9 @@ export default function NewsPage({
 
     startTransition(() => {
       if (editId) {
-        updateNews(editId, formData);
+        updateNews(editId, formData).then(() => router.refresh());
       } else {
-        createNews(formData);
+        createNews(formData).then(() => router.refresh());
       }
     });
 
@@ -36,7 +35,9 @@ export default function NewsPage({
 
   const handleDelete = (id) => {
     startTransition(() => {
-      deleteNews(id);
+      deleteNews(id).then(() => {
+        router.refresh(); // ⬅️ Refetch data dari server
+      });
     });
   };
 
@@ -49,8 +50,8 @@ export default function NewsPage({
   const handleClose = () => setOpenModalId(null);
 
   return (
-    <div className="max-w-6xl mx-auto">
-      <h1 className="text-3xl font-bold mb-4">Kelola Berita Kampus</h1>
+    <div className="max-w-6xl mx-auto py-6">
+      <h1 className="text-3xl font-bold mb-5">Kelola Berita UKM</h1>
 
       <form onSubmit={handleSubmit} className="mb-10 space-y-4">
         <input
@@ -68,7 +69,11 @@ export default function NewsPage({
           className="w-full border px-3 py-2 rounded h-32"
           required
         />
-        <Button type="submit" disabled={isPending}>
+        <Button
+          type="submit"
+          disabled={isPending}
+          className="hover:cursor-pointer"
+        >
           {editId ? "Update" : "Tambah"} Berita
         </Button>
       </form>

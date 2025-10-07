@@ -1,23 +1,35 @@
-'use client'
+import { connectDB } from "@/lib/mongoose";
+import UkmEvent from "@/models/ukm/UkmEvent";
+import { getNewsList } from "./announcements/actions";
 
-import { useState } from 'react';
+import Togle from "./Togle";
+import EventPage from "./events/EventPage";
+import AnnForm from "./announcements/AnnForm";
 
-import EventsPage from './events/EventsPage';
-import AnnPage from './announcements/AnnPage';
+export const revalidate = 5;
 
-export default function ClassPage() {
-  const [active, setActive] = useState("event")
+export default async function ClassPage() {
+  await connectDB();
+  const eventsDb = await UkmEvent.find().lean();
+  const newsList = await getNewsList();
 
-  const buttonStyle = (page) => `px-4 py-1 rounded ${active === page ? "bg-gray-300" : ""}`
+  const events = eventsDb.map((event) => ({
+    ...event,
+    _id: event._id.toString(),
+    subEvents:
+      event.subEvents?.map((sub) => ({
+        ...sub,
+        _id: sub._id.toString(),
+        time: sub.time instanceof Date ? sub.time.toISOString() : sub.time,
+      })) ?? [],
+  }));
 
   return (
     <main className="max-w-6xl mx-auto">
-      <div className="flex justify-center space-x-4">
-        <button onClick={() => setActive("event")} className={buttonStyle("event")}>Events</button>
-        <button onClick={() => setActive("ann")} className={buttonStyle("ann")}>Announcement</button>
-      </div>
-      {active === "event" && <EventsPage/>}
-      {active === "ann" && <AnnPage/>}
+      <Togle
+        event={<EventPage events={events} />}
+        ann={<AnnForm newsList={newsList} />}
+      />
     </main>
   );
 }

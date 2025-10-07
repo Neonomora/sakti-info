@@ -1,27 +1,11 @@
-import { connectDB } from "@/lib/mongoose";
-import CampusEvent from "@/models/event/CampusEvent";
+'use client'
+
 import { CreateMainEvent, UpdateEvent, DeleteEvent, CreateSubEvent } from "./EventForm";
 
-export const revalidate = 5;
-
-export default async function AdminEventsPage() {
-  await connectDB();
-  const eventsDb = await CampusEvent.find().lean();
-
-  const events = eventsDb.map((event) => ({
-    ...event,
-    _id: event._id.toString(),
-    subEvents:
-      event.subEvents?.map((sub) => ({
-        ...sub,
-        _id: sub._id.toString(),
-        time: sub.time instanceof Date ? sub.time.toISOString() : sub.time,
-      })) ?? [],
-  }));
-
+export default function EventPage({events}) {
   return (
-    <div className="max-w-6xl mx-auto">
-      <h1 className="text-3xl font-bold mb-5">Kelola Event Kampus</h1>
+    <div className="max-w-6xl mx-auto py-6">
+      <h1 className="text-3xl font-bold mb-5">Kelola Event UKM</h1>
 
       <h2 className="text-xl mb-2">Tambah Event Baru</h2>
       <CreateMainEvent />
@@ -39,7 +23,7 @@ export default async function AdminEventsPage() {
                 <div className="space-y-4 flex space-x-2">
                   <DeleteEvent id={event._id} />
                   <UpdateEvent id={event._id} currentTitle={event.title} />
-                  <CreateSubEvent eventId={event._id}/>
+                  <CreateSubEvent eventId={event._id} />
                 </div>
               </div>
               <ul>

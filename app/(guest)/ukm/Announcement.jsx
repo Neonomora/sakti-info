@@ -1,37 +1,53 @@
-import {
-  Accordion,
-  AccordionItem,
-  AccordionTrigger,
-  AccordionContent,
-} from "@/components/ui/accordion";
-import { format } from "date-fns";
-import { id } from "date-fns/locale";
+"use client"
 
-export default function Announcement({ announcement }) {
+import { useState } from "react"
+import Modal from "@/components/ui/Modal"
+
+export default function Announcement({ newsList }) {
+  const [openModalId, setOpenModalId] = useState(null)
+
+  const handleOpen = (id) => {
+    setOpenModalId(id)
+  }
+
+  const handleClose = () => {
+    setOpenModalId(null)
+  }
+
   return (
-    <Accordion
-      type="single"
-      collapsible
-      className="bg-white rounded-xl shadow-md mx-auto"
-    >
-      <AccordionItem value="event-detail" className="px-4">
-        <AccordionTrigger>
-          <h4 className="text-lg font-medium">{announcement.title}</h4>
-        </AccordionTrigger>
-        <AccordionContent>
-          <div>
-            <p className="text-sm font-light text-center">
-              {announcement.description}
-            </p>
-            <p className="text-xs font-thin text-gray-500 mt-2">
-              <strong>Dibuat Pada:</strong>{" "}
-              {format(new Date(announcement.createdAt), "dd MMMM yyyy", {
-                locale: id,
-              })}
-            </p>
-          </div>
-        </AccordionContent>
-      </AccordionItem>
-    </Accordion>
-  );
+    <>
+      <ul className="flex flex-row gap-4 flex-wrap justify-center xl:justify-start">
+        {newsList.map((item) => {
+          const isOpen = openModalId === item._id
+
+          return (
+            <li
+              key={item._id}
+              className="w-64 h-40 p-4 border rounded-md hover:bg-gray-100 cursor-pointer flex-shrink-0 shadow border-gray-300 bg-white"
+            >
+              <button
+                onClick={() => handleOpen(item._id)}
+                className="text-left w-full h-full flex flex-col justify-between cursor-pointer"
+              >
+                <h2 className="text-lg font-semibold line-clamp-2">
+                  {item.title}
+                </h2>
+                <p className="text-sm text-gray-600 mt-2 line-clamp-3">
+                  {item.content}
+                </p>
+              </button>
+
+              {/* Modal untuk detail */}
+              <Modal isOpen={isOpen} onClose={handleClose}>
+                <h3 className="text-xl font-bold mb-2">{item.title}</h3>
+                <p className="text-sm text-gray-700 whitespace-pre-line">
+                  {item.content}
+                </p>
+              </Modal>
+            </li>
+          )
+        })}
+      </ul>
+    </>
+  )
 }

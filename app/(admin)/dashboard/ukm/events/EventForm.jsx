@@ -76,7 +76,7 @@ export function CreateMainEvent() {
         type="text"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
-        placeholder="Judul Event"
+        placeholder="Judul Event Utama"
         className="border p-2 w-full"
       />
       {subEvents.map((sub, idx) => (
@@ -152,7 +152,7 @@ export function CreateSubEvent({ eventId }) {
         className="text-green-500 rounded"
         onClick={() => setShowForm(!showForm)}
       >
-        {showForm ? "Tutup" : <PlusIcon className="h-5 w-5 text-green-500" />}
+        {showForm ? "Tutup" : <PlusIcon className="h-5 text-green-500" />}
       </button>
       {showForm && (
         <form onSubmit={handleSubmit} className="space-x-2">
@@ -217,7 +217,7 @@ export function UpdateEvent({ id, subId, currentTitle, currentTime }) {
           onClick={() => setShowForm(!showForm)}
           className="text-blue-500 rounded "
         >
-          {showForm ? "Tutup" : <PencilSquareIcon className="h-5 w-5 text-blue-500" />}
+          {showForm ? "Tutup" : <PencilSquareIcon className="h-5 text-blue-500" />}
         </button>
       </div>
       {showForm && (
@@ -270,7 +270,7 @@ export function DeleteEvent({ id, subId }) {
       disabled={isPending}
       className="text-red-500 rounded pb-1"
     >
-      {isPending ? "Loading..." : <TrashIcon className="h-5 w-5 text-red-500" />}
+      {isPending ? "Loading..." : <TrashIcon className="h-5 text-red-500" />}
     </button>
   );
 }

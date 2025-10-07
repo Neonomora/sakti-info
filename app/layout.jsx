@@ -1,11 +1,11 @@
-import { Fredoka } from 'next/font/google';
+import { Fredoka } from "next/font/google";
 import "@/styles/globals.css";
 import { Toaster } from "sonner";
 
 const fontSans = Fredoka({
-  subsets: ['latin'],
-  weight: ['400'], // pilih sesuai kebutuhan
-  variable: '--font-fredoka',   // opsional: kalau mau pakai CSS variable
+  subsets: ["latin"],
+  weight: ['400', '500', '600', '700'], // pilih sesuai kebutuhan
+  variable: "--font-fredoka", // opsional: kalau mau pakai CSS variable
 });
 
 export const metadata = {
@@ -59,10 +59,12 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body className={`${fontSans.variable} bg-gray-100 lg:w-8/12 md:w-10/12 mx-auto h-full antialiased`}>
-        <Toaster richColors position="top-center" />
-        {children}
+    <html lang="id">
+      <body className={`${fontSans.variable} bg-gray-100 h-full antialiased`}>
+        <div className="lg:w-8/12 md:w-10/12 mx-auto">
+          <Toaster richColors position="top-center" />
+          {children}
+        </div>
       </body>
     </html>
   );
