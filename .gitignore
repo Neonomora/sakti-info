@@ -42,6 +42,3 @@ next-env.d.ts
 
 # Hashing
 hash.js
-
-#Middleware
-middleware.js
