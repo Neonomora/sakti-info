@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 const AnnouncementClassSchema = new mongoose.Schema({
   title: { type: String, required: true },
-  description: String,
+  content: String,
 }, {
   timestamps: true,
 });

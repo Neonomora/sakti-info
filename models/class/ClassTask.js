@@ -2,10 +2,10 @@ import mongoose from 'mongoose';
 
 const ClassTaskSchema = new mongoose.Schema({
   title: String,
-  formatFile: String,
+  format: String,
   upload: String,
-  deadlineDate: Date,
-  deadlineTime: String,
+  Date: Date,
+  Time: Date,
   detail: String,
 }, {
   timestamps: true,
