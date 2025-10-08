@@ -6,27 +6,13 @@ import {
   deleteAction,
   updateAction,
 } from "./actions";
-import { setHours, setMinutes, formatISO } from "date-fns";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import {
   TrashIcon,
   PencilSquareIcon,
-  PlusIcon,
 } from "@heroicons/react/24/outline";
 import { Button } from "@/components/ui/button";
-
-function convertTimeToISO(timeString) {
-  if (!timeString.includes(":")) return "";
-  const [hours, minutes] = timeString.split(":").map(Number);
-
-  // Mulai dari tanggal hari ini
-  const now = new Date();
-  const withHours = setHours(now, hours);
-  const withMinutes = setMinutes(withHours, minutes);
-
-  return formatISO(withMinutes); // ISO format
-}
 
 // Create Main Event
 export function CreateMainEvent() {
@@ -47,15 +33,11 @@ export function CreateMainEvent() {
       return;
     }
 
-    // Konversi setiap subEvent.time ke ISO
-    // const formattedTime = subEvents.map((sub) => ({
-    //   ...sub,
-    //   time: sub.time ? convertTimeToISO(sub.time) : "",
-    // }));
-
     startTransition(async () => {
+      const dateTime = new Date(`${date}T${time}`)
+
       const result = await createAction({
-        title, format, upload, date, time, detail
+        title, format, upload, dateTime, detail
       });
       if (result.success) {
         router.refresh(); // Refresh halaman setelah submit
@@ -129,7 +111,7 @@ export function CreateMainEvent() {
   );
 }
 
-// Update Event & Sub Event
+// Update Event
 export function UpdateEvent({ id, subId, currentTitle, currentTime }) {
   const router = useRouter();
   const [title, setTitle] = useState(currentTitle);

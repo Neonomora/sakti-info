@@ -6,8 +6,6 @@ export default function TaskPage({tasks}) {
   return (
     <div className="max-w-6xl mx-auto py-6">
       <h1 className="text-3xl font-bold mb-5">Kelola Tugas Kelas</h1>
-
-      <h2 className="text-xl mb-2">Tambah Event Baru</h2>
       <CreateMainEvent />
 
       <h2 className="text-xl mt-8 mb-2">Daftar Tugas</h2>
@@ -21,15 +19,14 @@ export default function TaskPage({tasks}) {
               <div className="flex flex-row justify-between">
                 <div>
                 <h3 className="font-semibold text-xl">{task.title}</h3>
-                <p>{task.format}</p>
-                <p>{task.upload}</p>
-                <p>{task.detail}</p>
-                <p>{task.format}</p>
-                <p>{task.format}</p>
+                <p>Format File: {task.format}</p>
+                <p>Upload Di: {task.upload}</p>
+                <p>Deadline: {task.dateTime.toLocaleString()}</p>
+                <p>Detail Tugas: {task.detail}</p>
                 </div>
-                <div className="space-y-4 flex space-x-2">
-                  <DeleteEvent id={task._id} />
+                <div className="flex items-start">
                   <UpdateEvent id={task._id} currentTitle={task.title} />
+                  <DeleteEvent id={task._id} />
                 </div>
               </div>
             </div>

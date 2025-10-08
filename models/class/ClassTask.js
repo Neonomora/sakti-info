@@ -4,8 +4,7 @@ const ClassTaskSchema = new mongoose.Schema({
   title: String,
   format: String,
   upload: String,
-  Date: Date,
-  Time: Date,
+  dateTime: Date,
   detail: String,
 }, {
   timestamps: true,
