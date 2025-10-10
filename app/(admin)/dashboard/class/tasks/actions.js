@@ -19,8 +19,7 @@ export async function updateAction(
   newTitle,
   newFormat,
   newUpload,
-  newDate,
-  newTime,
+  newDateTime,
   newDetail
 ) {
   try {
@@ -31,8 +30,7 @@ export async function updateAction(
           title: newTitle,
           format: newFormat,
           upload: newUpload,
-          date: newDate,
-          time: newTime,
+          dateTime: newDateTime,
           detail: newDetail,
         },
       },

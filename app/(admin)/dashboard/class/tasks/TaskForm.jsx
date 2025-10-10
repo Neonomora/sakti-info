@@ -1,17 +1,10 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import {
-  createAction,
-  deleteAction,
-  updateAction,
-} from "./actions";
+import { createAction, deleteAction, updateAction } from "./actions";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import {
-  TrashIcon,
-  PencilSquareIcon,
-} from "@heroicons/react/24/outline";
+import { TrashIcon, PencilSquareIcon } from "@heroicons/react/24/outline";
 import { Button } from "@/components/ui/button";
 
 // Create Main Event
@@ -34,10 +27,14 @@ export function CreateMainEvent() {
     }
 
     startTransition(async () => {
-      const dateTime = new Date(`${date}T${time}`)
+      const dateTime = new Date(`${date}T${time}`);
 
       const result = await createAction({
-        title, format, upload, dateTime, detail
+        title,
+        format,
+        upload,
+        dateTime,
+        detail,
       });
       if (result.success) {
         router.refresh(); // Refresh halaman setelah submit
@@ -112,24 +109,39 @@ export function CreateMainEvent() {
 }
 
 // Update Event
-export function UpdateEvent({ id, subId, currentTitle, currentTime }) {
+export function UpdateEvent({
+  id,
+  currentTitle,
+  currentFormat,
+  currentUpload,
+  currentDate,
+  currentTime,
+  currentDetail,
+}) {
   const router = useRouter();
   const [title, setTitle] = useState(currentTitle);
-  const [time, setTime] = useState(
-    currentTime ? currentTime.substring(11, 16) : ""
-  ); // Extract HH:MM
+  const [format, setFormat] = useState(currentFormat);
+  const [upload, setUpload] = useState(currentUpload);
+  const [date, setDate] = useState(currentDate);
+  const [time, setTime] = useState(currentTime);
+  const [detail, setDetail] = useState(currentDetail);
+
   const [isPending, startTransition] = useTransition();
   const [showForm, setShowForm] = useState(false);
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!title && !time) return toast.error("Form Tidak Boleh Kosong");
-
-    // Konversi time ke ISO
-    const formattedTime = convertTimeToISO(time);
-
     startTransition(async () => {
-      const result = await updateAction(id, subId, title, formattedTime);
+      const dateTime = new Date(`${date}T${time}`);
+      const result = await updateAction(
+        id,
+        title,
+        format,
+        upload,
+        dateTime,
+        detail
+      );
+
       if (result.success) {
         router.refresh();
       } else {
@@ -159,14 +171,37 @@ export function UpdateEvent({ id, subId, currentTitle, currentTime }) {
             onChange={(e) => setTitle(e.target.value)}
             className="border p-2 w-full"
           />
-          {subId && (
-            <input
-              type="time"
-              value={time}
-              onChange={(e) => setTime(e.target.value)}
-              className="border p-2 w-full"
-            />
-          )}
+          <input
+            type="text"
+            value={format}
+            onChange={(e) => setFormat(e.target.value)}
+            className="border p-2 w-full"
+          />
+          <input
+            type="text"
+            value={upload}
+            onChange={(e) => setUpload(e.target.value)}
+            className="border p-2 w-full"
+          />
+          <input
+            type="date"
+            value={date}
+            onChange={(e) => setDate(e.target.value)}
+            className="border p-2 w-full"
+          />
+          <input
+            type="time"
+            value={time}
+            onChange={(e) => setTime(e.target.value)}
+            className="border p-2 w-full"
+          />
+          <input
+            type="text"
+            value={detail}
+            onChange={(e) => setDetail(e.target.value)}
+            className="border p-2 w-full"
+          />
+
           <button
             type="submit"
             disabled={isPending}
@@ -181,13 +216,13 @@ export function UpdateEvent({ id, subId, currentTitle, currentTime }) {
 }
 
 // Delete Event
-export function DeleteEvent({ id, subId }) {
+export function DeleteEvent({ id }) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
   const handleDelete = () => {
     startTransition(async () => {
-      const result = await deleteAction(id, subId);
+      const result = await deleteAction(id);
       if (result.success) {
         router.refresh();
       } else {
