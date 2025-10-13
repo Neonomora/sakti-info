@@ -1,6 +1,5 @@
 "use client";
 
-import Navbar from "@/components/GuestNavbar";
 import React, { useEffect, useState } from "react";
 import { Checkbox } from "@/components/ui/checkbox";
 
@@ -27,9 +26,7 @@ export default function SendInfoForm() {
     fetchTemplates();
   }, []);
 
-  function handleCheckboxChange(e) {
-    const { value, checked } = e.target;
-
+  function handleCheckboxChange(value, checked) {
     if (checked) {
       setSelectedTemplateIds((prev) => [...prev, value]);
     } else {
@@ -65,7 +62,6 @@ export default function SendInfoForm() {
 
   return (
     <div className="max-w-6xl mx-auto">
-      <Navbar />
       <h1>Kirim Notifikasi Info</h1>
       {message && <p>{message}</p>}
 
@@ -75,20 +71,15 @@ export default function SendInfoForm() {
           {templates.map((template) => (
             <label
               key={template._id}
-              className="flex items-center space-x-2 mb-2 cursor-pointer">
+              className="flex items-center space-x-2 mb-2 cursor-pointer"
+            >
               <Checkbox
                 id={template._id}
                 value={template._id}
                 checked={selectedTemplateIds.includes(template._id)}
-                onCheckedChange={(checked) => {
-                  if (checked) {
-                    setSelectedTemplateIds((prev) => [...prev, template._id]);
-                  } else {
-                    setSelectedTemplateIds((prev) =>
-                      prev.filter((id) => id !== template._id)
-                    );
-                  }
-                }}
+                onCheckedChange={(checked) =>
+                  handleCheckboxChange(template._id, checked)
+                }
               />
               <span>{template.title}</span>
             </label>
@@ -114,7 +105,6 @@ export default function SendInfoForm() {
                   backgroundColor: "#f9f9f9",
                 }}
               >
-                <h4>{template.title}</h4>
                 <p>{template.message}</p>
               </div>
             );

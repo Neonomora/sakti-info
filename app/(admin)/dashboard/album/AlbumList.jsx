@@ -4,6 +4,9 @@ import { useState } from "react";
 import Image from "next/image";
 import { useRouter, usePathname } from "next/navigation";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
+import { Button } from "@/components/ui/button";
+import ConfirmModal from "@/components/ConfirmModal";
+
 
 const categories = ["All", "Independent Day", "HBI", "other"];
 
@@ -20,6 +23,8 @@ export default function AlbumListCSR({ initialAlbums, initialCategory }) {
   const [selectedCategory, setSelectedCategory] = useState(
     categories.includes(initialCategory) ? initialCategory : "other"
   );
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedAlbumId, setSelectedAlbumId] = useState(null);
 
   const fetchAlbums = async (cat) => {
     setLoading(true);
@@ -36,18 +41,28 @@ export default function AlbumListCSR({ initialAlbums, initialCategory }) {
 
   const handleCategoryChange = (cat) => {
     setCategory(cat);
-    router.push(`${pathname}?category=${encodeURIComponent(cat)}`, { shallow: true });
+    router.push(`${pathname}?category=${encodeURIComponent(cat)}`, {
+      shallow: true,
+    });
     fetchAlbums(cat);
   };
 
-  const handleDelete = async (id) => {
-    if (!confirm("Yakin ingin menghapus album ini?")) return;
-    const res = await fetch(`/api/admin/album/${id}`, { method: "DELETE" });
+  const handleOpenConfirm = (id) => {
+    setSelectedAlbumId(id);
+    setIsModalOpen(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    const res = await fetch(`/api/admin/album/${selectedAlbumId}`, {
+      method: "DELETE",
+    });
     if (res.ok) {
-      fetchAlbums(category);
+      fetchAlbums(category); // reload data
     } else {
       alert("Gagal menghapus album");
     }
+    setIsModalOpen(false);
+    setSelectedAlbumId(null);
   };
 
   const handleFileChange = (e) => {
@@ -154,14 +169,20 @@ export default function AlbumListCSR({ initialAlbums, initialCategory }) {
               <div className="p-2 text-sm font-medium text-gray-700">
                 Kategori: {album.eventCategory}
               </div>
-              <button
-                onClick={() => handleDelete(album._id)}
-                className="bg-red-600 text-white w-full py-1 hover:bg-red-700"
+              <Button
+                variant="destructive"
+                onClick={() => handleOpenConfirm(album._id)}
               >
                 Hapus
-              </button>
+              </Button>
             </li>
           ))}
+          <ConfirmModal
+            isOpen={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
+            onConfirm={handleConfirmDelete}
+            message="Yakin ingin menghapus album ini?"
+          />
         </ul>
       )}
 
