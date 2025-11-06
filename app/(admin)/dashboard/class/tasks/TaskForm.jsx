@@ -9,6 +9,9 @@ import { Button } from "@/components/ui/button";
 
 // Create Main Event
 export function CreateMainEvent() {
+  const categories = ["TRKJ", "BD", "MKSP"];
+  const subCategories = ["A1", "B1", "C1"];
+
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
@@ -18,6 +21,8 @@ export function CreateMainEvent() {
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
   const [detail, setDetail] = useState("");
+  const [classFilter, setClassFilter] = useState("");
+  const [subClassFilter, setSubClassFilter] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -35,6 +40,8 @@ export function CreateMainEvent() {
         upload,
         dateTime,
         detail,
+        classFilter,
+        subClassFilter,
       });
       if (result.success) {
         router.refresh(); // Refresh halaman setelah submit
@@ -44,6 +51,8 @@ export function CreateMainEvent() {
         setDate("");
         setTime("");
         setDetail("");
+        setClassFilter("");
+        setSubClassFilter("");
       } else {
         toast.error("Gagal membuat event: " + result.message);
       }
@@ -94,6 +103,36 @@ export function CreateMainEvent() {
         placeholder="Detail Tugas"
         className="border p-2 w-full"
       />
+      <div className="flex">
+        {categories.map((cat) => (
+          <div
+            key={cat}
+            className={`text-center mx-2 w-18 py-2 rounded-xl shadow-sm hover:cursor-pointer ${
+              cat === classFilter ? "bg-blue" : "bg-white"
+            }`}
+            onClick={() => {
+              setClassFilter(cat);
+            }}
+          >
+            {cat}
+          </div>
+        ))}
+      </div>
+      <div className="flex">
+      {subCategories.map((scat) => (
+        <div
+          key={scat}
+          className={`text-center mx-2 w-18 py-2 rounded-xl shadow-sm hover:cursor-pointer ${
+            scat === subClassFilter ? "bg-blue" : "bg-white"
+          }`}
+          onClick={() => {
+            setSubClassFilter(scat);
+          }}
+        >
+          {scat}
+        </div>
+      ))}
+      </div>
 
       <div className="flex space-x-2">
         <Button
