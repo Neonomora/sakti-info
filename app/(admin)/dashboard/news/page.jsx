@@ -1,6 +1,8 @@
 import NewsPage from './NewsPage'
 import { getNewsList, createNews, updateNews, deleteNews } from './actions'
 
+export const revalidate = 5;
+
 export default async function Page() {
   const newsList = await getNewsList()
 

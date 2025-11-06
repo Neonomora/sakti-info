@@ -2,6 +2,8 @@ import AlbumList from "./AlbumList";
 import { connectDB } from "@/lib/mongoose";
 import Album from "@/models/album/Album";
 
+export const revalidate = 5;
+
 const categories = ["All", "Independent Day", "HBI", "other"];
 
 export default async function AlbumPage({ searchParams }) {

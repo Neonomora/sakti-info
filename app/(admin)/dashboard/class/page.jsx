@@ -18,8 +18,6 @@ export default async function ClassPage() {
     _id: event._id.toString(),
   }));
 
-  console.log(tasks)
-
   return (
     <main className="max-w-6xl mx-auto">
       <Togle
