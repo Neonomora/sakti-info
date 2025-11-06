@@ -10,7 +10,7 @@ import ConfirmModal from "@/components/ConfirmModal";
 
 const categories = ["All", "Independent Day", "HBI", "other"];
 
-export default function AlbumListCSR({ initialAlbums, initialCategory }) {
+export default function AlbumList({ initialAlbums, initialCategory }) {
   const router = useRouter();
   const pathname = usePathname();
 

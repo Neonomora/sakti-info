@@ -1,18 +1,31 @@
 import { connectDB } from "@/lib/mongoose";
+import Link from "next/link";
 import ClassTask from "@/models/class/ClassTask";
 import AnnouncementClass from "@/models/class/AnnouncementClass";
-import TaskAccordion from "./TaskAccordion";
-import { format } from "date-fns";
-import { id } from "date-fns/locale";
+import TaskAccordion from "./Task";
+import Announcement from "./Announcement";
+import Filter from "./Filter";
 
 export const revalidate = 60;
 
-export default async function TaskPage() {
+export default async function TaskPage({ searchParams }) {
   await connectDB();
 
+  const { classFilter, subClassFilter } = await searchParams;
+
+  const query = {};
+
+  if (classFilter) {
+    query.classFilter = classFilter;
+  }
+
+  if (subClassFilter) {
+    query.subClassFilter = subClassFilter;
+  }
+
   const [tasks, announcements] = await Promise.all([
-    ClassTask.find().lean().sort({ createdAt: -1 }),
-    AnnouncementClass.find().lean().sort({ createdAt: -1 }),
+    ClassTask.find(query).lean().sort({ createdAt: -1 }),
+    AnnouncementClass.find(query).lean().sort({ createdAt: -1 }),
   ]);
 
   const plainTasks = tasks.map((task) => ({
@@ -30,27 +43,16 @@ export default async function TaskPage() {
 
   return (
     <div className="max-w-6xl mx-auto">
-      <div className="flex flex-row justify-between gap-4">
+      <div>
+        <Filter/>
+      </div>
+      <div className="flex flex-row">
         {/* Left Column - Announcements */}
         <section className="basis-1/3">
-          <h3 className="text-2xl font-semibold mb-4 pl-4">Seputar Kelas</h3>
-          <ul className="space-y-4">
-            {plainAnnouncements.map((announcement) => (
-              <li
-                key={announcement._id}
-                className="bg-white p-4 rounded-lg shadow"
-              >
-                <h4 className="text-xl font-bold">{announcement.title}</h4>
-                <p>{announcement.description}</p>
-                <p className="text-sm text-gray-500 mt-2">
-                  <strong>Dibuat Pada:</strong>{" "}
-                  {format(new Date(announcement.createdAt), "dd MMMM yyyy", {
-                    locale: id,
-                  })}
-                </p>
-              </li>
-            ))}
-          </ul>
+          <h3 className="text-xl md:text-3xl font-bold mb-6 text-center xl:text-start xl:pl-10">
+            Seputar Kelas
+          </h3>
+          <Announcement announcementList={plainAnnouncements} />
         </section>
 
         {/* Right Column - Tasks */}

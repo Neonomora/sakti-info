@@ -34,7 +34,7 @@ export default async function EventPage() {
     <div className="max-w-6xl mx-auto">
       <div className="flex flex-row">
         <section className="basis-1/3 pr-4">
-          <h3 className="text-xl md:text-3xl text-center font-bold text-center mb-6 pl-4">
+          <h3 className="text-xl md:text-3xl font-bold mb-6 text-center xl:text-start xl:pl-10">
             Seputar UKM
           </h3>
           <div className="space-y-4">

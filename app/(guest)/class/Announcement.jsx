@@ -3,7 +3,7 @@
 import { useState } from "react"
 import Modal from "@/components/ui/Modal"
 
-export default function Announcement({ newsList }) {
+export default function Announcement({ announcementList }) {
   const [openModalId, setOpenModalId] = useState(null)
 
   const handleOpen = (id) => {
@@ -17,13 +17,13 @@ export default function Announcement({ newsList }) {
   return (
     <>
       <ul className="flex flex-row gap-4 flex-wrap justify-center xl:justify-start">
-        {newsList.map((item) => {
+        {announcementList.map((item) => {
           const isOpen = openModalId === item._id
 
           return (
             <li
               key={item._id}
-              className="w-64 xl:w-80 h-40 p-4 border rounded-md hover:bg-gray-100 cursor-pointer flex-shrink-0 shadow border-gray-300 bg-white"
+              className="w-64 h-40 xl:w-80 p-4 border border-gray-300 rounded-md hover:bg-gray-100 cursor-pointer flex-shrink-0 shadow bg-white"
             >
               <button
                 onClick={() => handleOpen(item._id)}

@@ -10,6 +10,10 @@ import { format } from "date-fns";
 import { id } from "date-fns/locale";
 
 export default function TaskAccordion({ task }) {
+  const date = task.dateTime
+
+  const formattedDate = format(date, "d MMMM yyyy, HH:MM", {locale: id})
+
   return (
     <Accordion
       type="single"
@@ -23,18 +27,12 @@ export default function TaskAccordion({ task }) {
 
         <AccordionContent className="p-4 space-y-2 text-sm text-gray-700">
           <div>
-            <strong>Format File:</strong> {task.formatFile}
+            <strong>Format File:</strong> {task.format}
           </div>
           <div>
             <strong>Upload:</strong> {task.upload}
           </div>
-          <div>
-            <strong>Deadline:</strong>{" "}
-            {format(new Date(task.deadlineDate), "dd MMMM yyyy", {
-              locale: id,
-            })}{" "}
-            {task.deadlineTime}
-          </div>
+          <div><strong>Deadline: </strong>{formattedDate}</div>
           <div>
             <strong>Detail:</strong> {task.detail}
           </div>

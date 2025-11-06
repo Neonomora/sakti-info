@@ -6,7 +6,7 @@ const categories = ["All", "Independent Day", "HBI", "other"];
 
 export default async function AlbumPage({ searchParams }) {
   await connectDB();
-  const params = await searchParams;
+  const params = await searchParams
 
   const category = params?.category || "All";
   const filter = category === "All" ? {} : { eventCategory: category };
@@ -26,7 +26,6 @@ export default async function AlbumPage({ searchParams }) {
       <AlbumList
         initialAlbums={albums}
         initialCategory={category}
-        categories={categories}
       />
     </div>
   );

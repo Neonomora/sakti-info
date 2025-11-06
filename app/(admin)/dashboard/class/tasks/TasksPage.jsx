@@ -11,7 +11,7 @@ export default function TaskPage({ tasks }) {
       <h2 className="text-xl mt-8 mb-2">Daftar Tugas</h2>
       <ul>
         {tasks.map((task) => {
-          const dateObj = task.dateTime
+          const dateObj = task.dateTime;
           const FDate = dateObj.toISOString().split("T")[0]; // "YYYY-MM-DD"
           const FTime = dateObj.toTimeString().slice(0, 5); // "HH:MM"
 
@@ -28,9 +28,14 @@ export default function TaskPage({ tasks }) {
                     <p>Upload Di: {task.upload}</p>
                     <p>
                       Deadline:{" "}
-                      {task.dateTime
-                        .toLocaleString("id-ID")
-                        .replace(/\./g, ":")}
+                      {task.dateTime.toLocaleString("id-ID", {
+                        day: "numeric",
+                        month: "long",
+                        year: "numeric",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                        hour12: false,
+                      })}
                     </p>
                     <p>Detail Tugas: {task.detail}</p>
                   </div>
