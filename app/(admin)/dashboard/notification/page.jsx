@@ -108,13 +108,6 @@ export default function SendInfoForm() {
             return (
               <div
                 key={id}
-                style={{
-                  marginTop: "10px",
-                  padding: "10px",
-                  border: "1px solid #ccc",
-                  borderRadius: "4px",
-                  backgroundColor: "#f9f9f9",
-                }}
               >
                 <p>{template.message}</p>
               </div>
@@ -126,7 +119,6 @@ export default function SendInfoForm() {
           type="submit"
           disabled={loading || selectedTemplateIds.length === 0}
           className="cursor-pointer bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
-          style={{ marginTop: "20px" }}
         >
           {loading ? "Mengirim..." : "Kirim Email"}
         </button>
