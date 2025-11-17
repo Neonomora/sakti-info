@@ -5,7 +5,7 @@
       "headers": [
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self' https://apis.google.com; style-src 'self' 'unsafe-inline' ; img-src 'self' https://res.cloudinary.com; media-src 'self' https://res.cloudinary.com; connect-src 'self' https://*.mongodb.net https://cloud.mongodb.com; base-uri 'self'; form-action 'self'; font-src 'self'; object-src 'none';"
+          "value": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://res.cloudinary.com; media-src 'self' https://res.cloudinary.com; connect-src 'self' https://api.cloudinary.com https://*.mongodb.net https://cloud.mongodb.com; font-src 'self' data:; base-uri 'self'; form-action 'self'; object-src 'none';"
         },
         {
           "key": "X-Content-Type-Options",
