@@ -49,7 +49,7 @@ function AdminLoginCard() {
       asChild
       className="py-3 border flex justify-center items-center cursor-pointer hover:opacity-90"
     >
-      <Link href="/admin/login">
+      <Link href="/login">
         <CardTitle className="text-black/80 text-base md:text-lg font-medium">
           Admin? Login here.
         </CardTitle>
@@ -85,7 +85,7 @@ export default function HomePageMobile() {
   ];
 
   return (
-    <div className="block md:hidden grid grid-cols-1 gap-4 max-h-screen p-4">
+    <div className="block md:hidden grid grid-cols-1 gap-4 h-full p-4">
       
       {/* Kolom 1 */}
       <div className="flex flex-col gap-4 h-full">

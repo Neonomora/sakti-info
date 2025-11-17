@@ -21,18 +21,18 @@ export default async function AlbumsPage({ searchParams }) {
   const albums = await Album.find(filter).sort({ createdAt: -1 }).lean();
 
   return (
-    <main className="max-w-6xl mx-auto">
-      <h1 className="text-3xl font-bold mb-6 text-center">Daftar Album</h1>
+    <main className="max-w-6xl mx-4 md:mx-auto">
+      <h1 className="text-xl md:text-2xl font-semibold mb-2 text-center">Daftar Album</h1>
 
-      <div className="mb-12 mx-2 bg-gray-200 rounded-md flex justify-between">
+      <div className="mb-6 bg-gray-200 rounded-md flex items-center justify-center">
         {categories.map((cat) => (
           <Link
             key={cat}
             href={`/album?category=${encodeURIComponent(cat)}`}
-            className={`inline-block py-2 w-full rounded-md text-center text-xs ${
+            className={`inline-block px-2 py-4 w-full rounded-md text-center text-xs md:text-sm ${
               category === cat
-                ? "bg-black text-white"
-                : "bg-gray-200 text-gray-700"
+                ? "bg-black text-white hover:bg-black"
+                : "bg-gray-200 text-black text-black hover:bg-gray-300"
             }`}
           >
             {cat}
@@ -63,7 +63,7 @@ export default async function AlbumsPage({ searchParams }) {
                   </div>
                 )}
               </AspectRatio>
-              <div className="p-3 text-sm font-medium text-gray-800">
+              <div className="p-3 text-sm text-black">
                 Kategori: {album.eventCategory}
               </div>
             </Link>

@@ -32,7 +32,7 @@ export default function Filter() {
   };
   return (
     <div className="flex flex-col space-y-4">
-      <div>
+      <div className="mx-auto">
         {categories.map((cat) => (
           <button
             key={cat}
@@ -46,7 +46,7 @@ export default function Filter() {
           </button>
         ))}
       </div>
-      <div className="mb-6">
+      <div className="mb-6 mx-auto">
         {subCategories.map((scat) => (
           <button
             key={scat}

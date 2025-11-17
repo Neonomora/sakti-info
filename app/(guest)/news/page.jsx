@@ -17,7 +17,7 @@ export default async function NewsPage() {
   }));
 
   return (
-    <div className="mx-auto max-w-6xl px-4 sm:px-6">
+    <div className="max-w-6xl md:mx-auto">
       <NewsListPage newsList={newsList} />
     </div>
   );

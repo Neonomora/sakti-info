@@ -1,5 +1,4 @@
 import { connectDB } from "@/lib/mongoose";
-import Link from "next/link";
 import ClassTask from "@/models/class/ClassTask";
 import AnnouncementClass from "@/models/class/AnnouncementClass";
 import TaskAccordion from "./Task";
@@ -42,22 +41,22 @@ export default async function TaskPage({ searchParams }) {
   }));
 
   return (
-    <div className="max-w-6xl mx-auto">
+    <div className="max-w-6xl mx-2 md:mx-auto">
       <div>
         <Filter/>
       </div>
-      <div className="flex flex-row">
+      <div className="flex flex-row justify-between ml-4 md:-ml-4">
         {/* Left Column - Announcements */}
         <section className="basis-1/3">
-          <h3 className="text-xl md:text-3xl font-bold mb-6 text-center xl:text-start xl:pl-10">
+          <h3 className="text-xl md:text-2xl font-semibold mb-4 text-center">
             Seputar Kelas
           </h3>
           <Announcement announcementList={plainAnnouncements} />
         </section>
 
         {/* Right Column - Tasks */}
-        <section className="basis-2/3">
-          <h2 className="text-3xl font-bold text-center mb-6">
+        <section className="basis-2/3 flex flex-col items-center">
+          <h2 className="text-xl md:text-2xl font-semibold mb-2">
             Daftar Tugas Kelas
           </h2>
           {plainTasks.map((task) => (

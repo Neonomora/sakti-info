@@ -19,7 +19,7 @@ export default async function ClassPage() {
   }));
 
   return (
-    <main className="max-w-6xl mx-auto">
+    <main className="max-w-6xl mx-6">
       <Togle
         event={<TaskPage tasks={tasks} />}
         ann={<AnnForm newsList={newsList} />}

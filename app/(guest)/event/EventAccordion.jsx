@@ -16,7 +16,7 @@ export default function EventAccordion({ event }) {
       className="w-full max-w-2xl bg-white rounded-xl shadow-md mx-auto my-4"
     >
       <AccordionItem value="event-detail">
-        <AccordionTrigger className="text-left px-4 py-3 text-lg font-medium border-b">
+        <AccordionTrigger className="text-left px-4 py-3 text-base md:text-lg font-medium">
           {event.title}
         </AccordionTrigger>
 
@@ -28,8 +28,8 @@ export default function EventAccordion({ event }) {
                   key={sub._id}
                   className="flex justify-between border-b pb-1"
                 >
-                  <span>{sub.title}</span>
-                  <span className="text-sm text-gray-500">
+                  <span className="text-xs md:text-sm">{sub.title}</span>
+                  <span className="text-xs md:text-sm text-gray-500">
                     {format(new Date(sub.time), "HH:mm")}
                   </span>
                 </li>

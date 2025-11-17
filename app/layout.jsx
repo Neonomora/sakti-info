@@ -60,8 +60,8 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="id">
-      <body className={`${fontSans.variable} bg-gray-100 h-full antialiased`}>
-        <div className="lg:w-8/12 md:w-10/12 mx-auto">
+      <body className={`${fontSans.variable} bg-gray-200 h-full antialiased`}>
+        <div className="lg:w-8/12 md:w-10/12 mx-auto overflow-hidden">
           <Toaster richColors position="top-center" />
           {children}
         </div>

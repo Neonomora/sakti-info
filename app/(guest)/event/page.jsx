@@ -20,10 +20,10 @@ export default async function EventPage() {
   }));
 
   return (
-    <div className="max-w-6xl mx-auto">
-      <h2 className="text-3xl font-bold text-center mb-6">
+    <div className="max-w-6xl mx-6">
+      <h1 className="text-xl md:text-2xl font-semibold text-center mb-6">
         Daftar Acara Kampus
-      </h2>
+      </h1>
       {plainEvents.map((event) => (
         <EventAccordion key={event._id} event={event} />
       ))}

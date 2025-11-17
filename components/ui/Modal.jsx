@@ -39,7 +39,7 @@ export default function Modal({ isOpen, onClose, children }) {
     >
       {/* Modal box */}
       <div
-        className={`bg-white rounded-md shadow-lg max-w-lg w-full max-h-[80vh] overflow-y-auto relative transform transition-all duration-200 ${
+        className={`mx-6 bg-white rounded-md shadow-lg max-w-lg w-full max-h-[80vh] overflow-y-auto relative transform transition-all duration-200 ${
           show
             ? "scale-100 opacity-100 translate-y-0"
             : "scale-95 opacity-0 translate-y-2"

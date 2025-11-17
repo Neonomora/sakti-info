@@ -65,7 +65,7 @@ export function CreateMainEvent() {
         type="text"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
-        placeholder="Judul Tugas"
+        placeholder="Judul Tugas, maks. 18 karakter"
         className="border p-2 w-full"
       />
       <input

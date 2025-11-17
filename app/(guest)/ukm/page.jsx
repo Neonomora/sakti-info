@@ -31,18 +31,18 @@ export default async function EventPage() {
   }));
 
   return (
-    <div className="max-w-6xl mx-auto">
-      <div className="flex flex-row">
-        <section className="basis-1/3 pr-4">
-          <h3 className="text-xl md:text-3xl font-bold mb-6 text-center xl:text-start xl:pl-10">
+    <div className="max-w-6xl mx-2">
+      <div className="flex flex-row justify-between ml-4 md:-ml-4">
+        <section className="basis-1/3">
+          <h3 className="text-xl md:text-2xl font-semibold mb-4 text-center">
             Seputar UKM
           </h3>
           <div className="space-y-4">
             <Announcement newsList={newsList} />
           </div>
         </section>
-        <section className="basis-2/3 pl-4">
-          <h2 className="text-xl md:text-3xl text-center font-bold text-center mb-6">
+        <section className="basis-2/3 flex flex-col items-center">
+          <h2 className="text-xl mb-2 md:text-2xl text-center font-semibold text-center">
             Daftar Acara UKM
           </h2>
           {plainEvents.map((event) => (

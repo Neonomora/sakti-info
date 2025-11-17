@@ -35,7 +35,7 @@ export default async function DashboardPage() {
   ];
 
   return (
-    <div className="max-w-6xl mx-auto">
+    <div className="max-w-6xl mx-6">
       <PreventBackToLogin />
       <h1 className="text-3xl font-bold mb-2">Dashboard Admin</h1>
       <h2 className="text-lg mb-6">Selamat datang, {session.user.name}!</h2>
@@ -47,7 +47,7 @@ export default async function DashboardPage() {
           {menuItems.map((item) => (
             <Card
               key={item.href}
-              className={`min-h-[120px] ${item.color} hover:shadow-md transition-shadow`}
+              className={`h-20 bg-white hover:shadow-md transition-shadow`}
             >
               <Link href={item.href} className="h-full block">
                 <CardContent className="p-4 h-full flex items-center justify-center">

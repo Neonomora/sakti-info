@@ -9,32 +9,40 @@ import {
 import { format } from "date-fns";
 import { id } from "date-fns/locale";
 
+const h3Style = "text-xs md:text-sm font-semibold ";
+const contentStyle = "text-xs md:text-sm";
 export default function TaskAccordion({ task }) {
-  const date = task.dateTime
+  const date = task.dateTime;
 
-  const formattedDate = format(date, "d MMMM yyyy, HH:MM", {locale: id})
+  const formattedDate = format(date, "d MMMM yyyy, HH:MM", { locale: id });
 
   return (
     <Accordion
       type="single"
       collapsible
-      className="w-full max-w-2xl bg-white rounded-xl shadow-md mx-auto my-4"
+      className="w-10/12 md:w-full rounded-xl shadow-md my-2"
     >
       <AccordionItem value="task-detail">
-        <AccordionTrigger className="text-left px-4 py-3 text-lg font-medium border-b">
+        <AccordionTrigger className="text-left px-4 py-3 text-sm md:text-base font-medium border-b bg-white">
           {task.title}
         </AccordionTrigger>
 
-        <AccordionContent className="p-4 space-y-2 text-sm text-gray-700">
+        <AccordionContent className="p-4 space-y-2 text-xs md:text-sm text-black">
           <div>
-            <strong>Format File:</strong> {task.format}
+            <span className={h3Style}>Format File: </span>
+            <span className={contentStyle}>{task.format}</span>
           </div>
           <div>
-            <strong>Upload:</strong> {task.upload}
+            <span className={h3Style}>Upload: </span>
+             <span className={contentStyle}>{task.upload}</span>
           </div>
-          <div><strong>Deadline: </strong>{formattedDate}</div>
           <div>
-            <strong>Detail:</strong> {task.detail}
+            <span className={h3Style}>Deadline: </span>
+            <span className={contentStyle}>{formattedDate}</span>
+          </div>
+          <div>
+            <span className={h3Style}>Detail: </span>
+            <span className={contentStyle}>{task.detail}</span>
           </div>
         </AccordionContent>
       </AccordionItem>
