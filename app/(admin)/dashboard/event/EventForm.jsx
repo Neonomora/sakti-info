@@ -1,12 +1,6 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import {
-  createAction,
-  createSubEventAction,
-  deleteAction,
-  updateAction,
-} from "./actions";
 import { setHours, setMinutes, formatISO } from "date-fns";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
@@ -26,7 +20,7 @@ function convertTimeToISO(timeString) {
 }
 
 // Create Main Event
-export function CreateMainEvent() {
+export function CreateMainEvent({createAction}) {
   const router = useRouter();
   const [title, setTitle] = useState("");
   const [subEvents, setSubEvents] = useState([]);
@@ -38,7 +32,8 @@ export function CreateMainEvent() {
     setSubEvents(newSubs);
   };
 
-  const addSubEvent = () => {
+  const addSubEvent = (e) => {
+    e.preventDefault();
     setSubEvents([...subEvents, { title: "", time: "" }]);
   };
 
@@ -98,7 +93,6 @@ export function CreateMainEvent() {
       ))}
       <div className="flex space-x-2">
         <Button
-          type="submit"
           onClick={addSubEvent}
           className="bg-gray-500 px-3 hover:bg-gray-500/90 hover:cursor-pointer"
         >
@@ -117,7 +111,7 @@ export function CreateMainEvent() {
 }
 
 // Create Sub Event
-export function CreateSubEvent({ eventId }) {
+export function CreateSubEvent({ eventId, createSubEventAction }) {
   const router = useRouter();
   const [title, setTitle] = useState("");
   const [time, setTime] = useState("");
@@ -132,6 +126,7 @@ export function CreateSubEvent({ eventId }) {
     const formattedTime = convertTimeToISO(time);
 
     startTransition(async () => {
+
       const result = await createSubEventAction(eventId, {
         title,
         time: formattedTime,
@@ -184,7 +179,7 @@ export function CreateSubEvent({ eventId }) {
 }
 
 // Update Event & Sub Event
-export function UpdateEvent({ id, subId, currentTitle, currentTime }) {
+export function UpdateEvent({ id, subId, currentTitle, currentTime, updateAction }) {
   const router = useRouter();
   const [title, setTitle] = useState(currentTitle);
   const [time, setTime] = useState(
@@ -250,7 +245,7 @@ export function UpdateEvent({ id, subId, currentTitle, currentTime }) {
 }
 
 // Delete Event
-export function DeleteEvent({ id, subId }) {
+export function DeleteEvent({ id, subId, deleteAction }) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
 

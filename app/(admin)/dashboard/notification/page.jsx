@@ -2,12 +2,14 @@
 
 import React, { useEffect, useState } from "react";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Textarea } from "@/components/ui/textarea";
 
 export default function SendInfoForm() {
   const [templates, setTemplates] = useState([]);
   const [selectedTemplateIds, setSelectedTemplateIds] = useState([]);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
+  const lastTemplateId = templates.length > 0 ? templates[templates.length - 1]._id : null;
 
   useEffect(() => {
     async function fetchTemplates() {
@@ -71,11 +73,12 @@ export default function SendInfoForm() {
           {templates.map((template) => (
             <label
               key={template._id}
-              className="flex items-center space-x-2 mb-2 cursor-pointer"
+              className="flex items-center mb-2 cursor-pointer"
             >
               <Checkbox
                 id={template._id}
                 value={template._id}
+                className="border-black mr-2"
                 checked={selectedTemplateIds.includes(template._id)}
                 onCheckedChange={(checked) =>
                   handleCheckboxChange(template._id, checked)
@@ -86,8 +89,16 @@ export default function SendInfoForm() {
           ))}
         </fieldset>
 
-        <div style={{ marginTop: "16px" }}>
-          <strong>Isi Pesan:</strong>
+        {selectedTemplateIds.includes(lastTemplateId) && (
+          <Textarea
+            placeholder="Type your message here.."
+            className="border-gray-500"
+            onChange={(e) => setMessage(e.target.value)}
+          />
+        )}
+
+        <div>
+          <p>Isi Pesan:</p>
           {selectedTemplateIds.length === 0 && (
             <p>Belum ada template yang dipilih.</p>
           )}
