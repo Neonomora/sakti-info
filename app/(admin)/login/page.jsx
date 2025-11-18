@@ -13,7 +13,7 @@ export default async function LoginPage() {
   }
 
   return (
-    <div className="max-w-6xl mx-auto">
+    <div className="max-w-6xl mx-2">
       <GuestNavbar />
       <LoginForm />
     </div>
